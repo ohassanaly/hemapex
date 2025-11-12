@@ -25,13 +25,23 @@ if __name__ == "__main__":
 
     response = client.responses.create(
         model="gpt-4.1",
-        input=user_message,
+        input=[
+            {
+                "role": "system",
+                "content": "Vôce é um hematologista especializado no tratamento do mieloma",
+            },
+            {"role": "user", "content": open("src/txt/prompt.txt").read()},
+            {"role": "user", "content": "Aqui está o texto clínico:"},
+            {"role": "user", "content": open("src/txt/example_text.txt").read()},
+        ],
+        temperature=0.0,
+        seed=42,
     )
 
     reply_text = response.output[0].content[0].text
 
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    output_filename = f"src/txt/response_{timestamp}.txt"
+    output_filename = f"src/results/response_{timestamp}.txt"
 
     with open(output_filename, "w", encoding="utf-8") as f:
         f.write(reply_text)

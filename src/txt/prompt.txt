@@ -1,6 +1,6 @@
-In the given consultation of a myeloma patient, extract all the oncological treatment lines, their different items and associated dates.
+Na consulta dada a um paciente com mieloma, extraia todas as linhas de tratamento oncológico, os seus diferentes itens e datas associadas.
 
-An oncological treatment line can contain the following items (none of them are mandatory):
+Uma linha de tratamento oncológico pode conter os seguintes itens (nenhum deles é obrigatório):
 
 induçao : VCd (Bortezomibe + Ciclofosfamida + Dexametasona)
 ou VRd (Bortezomibe + Lenalidomida + Dexametasona)
@@ -14,5 +14,3 @@ consolidaçao : VRd ou VCd
 manutençao : Talidomida ou Lenalidomida ou Bortezomibe ou Ixazomibe
 
 radioterapia
-
-Below is the clincal text :
