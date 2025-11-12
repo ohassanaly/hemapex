@@ -31,9 +31,12 @@ rename_columns_dict = {
     "Data termino do tratamento da Radioterapia": "radio_end",
     "Data do transplante:": "transplant_dt",
     "Tipo de transplante:": "transplant_type",
+    "Repeat Instance": "line_number",
 }
 
 label_cols = [
+    "rghc",
+    "line_number",
     "inducao_start",
     "inducao_end",
     final_drug_cols_dict["inducao"],
