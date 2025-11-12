@@ -1,0 +1,18 @@
+In the given consultation of a myeloma patient, extract all the oncological treatment lines, their different items and associated dates.
+
+An oncological treatment line can contain the following items (none of them are mandatory):
+
+induçao : VCd (Bortezomibe + Ciclofosfamida + Dexametasona)
+ou VRd (Bortezomibe + Lenalidomida + Dexametasona)
+ou VTD (Bortezomibe + Talidomida + Dexametasona) ou
+Dara-VRd  (Daratumumabe + VRd)
+
+transplante autólogo ou alogênico,
+
+consolidaçao : VRd ou VCd
+
+manutençao : Talidomida ou Lenalidomida ou Bortezomibe ou Ixazomibe
+
+radioterapia
+
+Below is the clincal text :
