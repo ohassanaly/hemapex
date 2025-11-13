@@ -12,6 +12,7 @@ Dates match (distance?) for each care
 import pandas as pd
 from typing import List
 from config import date_col_list, str_col_list
+from utils import sort_drugs
 
 
 def compare_number_lines(
@@ -101,11 +102,16 @@ if __name__ == "__main__":
     from utils import post_process_drugs, sort_drugs
     from config import label_cols, drugs_ref
 
-    api_df = pd.read_csv(
-        "/home/ohassanaly/work/hemapex/src/results/full_result_2025-11-13_16-59-43.csv"
-    )[label_cols]
-    check_df = pd.read_csv("/home/ohassanaly/work/hemapex/src/data/df_12_11_2025.csv")
+    api_result_path = (
+        "/home/ohassanaly/work/hemapex/src/results/full_result_2025-11-13_20-30-36.csv"
+    )
+    check_label_path = "/home/ohassanaly/work/hemapex/src/data/df_12_11_2025.csv"
+
+    # data loading
+    api_df = pd.read_csv(api_result_path)[label_cols]
+    check_df = pd.read_csv(check_label_path)
     check_df = check_df[check_df.rghc.isin(api_df.rghc.tolist())][label_cols]
+    # end of data loading
 
     ### preprocessing
     cols = [
@@ -120,11 +126,24 @@ if __name__ == "__main__":
 
     api_df[cols] = api_df[cols].apply(lambda col: col.apply(sort_drugs))
     check_df[cols] = check_df[cols].apply(lambda col: col.apply(sort_drugs))
-
     ### end of preprocessing
 
+    ### Comparisons
     # Compare the number of lines
-    agreement, comparison = compare_df(api_df, check_df)
+    line_compare = compare_number_lines(api_df, check_df)
+    diff_id = line_compare[line_compare != 0].index.tolist()
+    print(
+        "the two methods disagree on the number of line for",
+        len(diff_id),
+        "cases among the",
+        len(line_compare),
+        "cases evaluated",
+    )
+
+    # Comparison cell by cell when agreement on the number of lines
+    df1 = api_df[~api_df.rghc.isin(diff_id)].copy().reset_index(drop=True)
+    df2 = check_df[~check_df.rghc.isin(diff_id)].copy().reset_index(drop=True)
+    agreement, comparison = compare_df(df1, df2)
     print("number of cells where the two methods agree :", agreement)
     print("number of comparisons evaluated:", comparison)
     print("agreement ratio: ", round(agreement / comparison, 2) * 100, "%")
