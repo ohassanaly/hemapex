@@ -36,8 +36,10 @@ if __name__ == "__main__":
         api_df = text_df[text_df.rghc.isin(label_df.rghc.tolist())].iloc[:n_test][
             ["rghc", "text"]
         ]
+        logging.info(f"Extracting treatments for {api_df.rghc.nunique()}")
     else:
         api_df = text_df[text_df.rghc.isin(label_df.rghc.tolist())][["rghc", "text"]]
+        logging.info(f"Extracting treatments for {api_df.rghc.nunique()}")
 
     df = pd.DataFrame()
 
