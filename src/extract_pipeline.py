@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     # api_df = text_df[text_df.rghc.isin(label_df.rghc.tolist())][["rghc", "text"]]
     # testing
-    api_df = text_df[text_df.rghc.isin(label_df.rghc.tolist())].iloc[:5][
+    api_df = text_df[text_df.rghc.isin(label_df.rghc.tolist())].iloc[:2][
         ["rghc", "text"]
     ]
 

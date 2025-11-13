@@ -85,12 +85,21 @@ class TreatmentLine(BaseModel):
             return v
         try:
             datetime.strptime(v, "%d/%m/%Y")
+            return v
+        except ValueError:
+            pass
+        try:
+            dt = datetime.strptime(v, "%m/%d/%Y")
+            corrected_dt = dt.strftime("%d/%m/%Y")
+            logging.warning(
+                f"Corrected date from MM/DD/YYYY to DD/MM/YYYY: {v!r} -> {corrected_dt!r}"
+            )
+            return corrected_dt
         except ValueError:
             logging.warning(
                 f"Invalid date format received: {v!r} (expected DD/MM/YYYY)"
             )
             return v
-        return v
 
     @field_validator("transplant_type", mode="before")
     def normalize_transplant_type(cls, v):
