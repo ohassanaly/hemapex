@@ -3,6 +3,8 @@ from datetime import datetime
 from typing import List, Optional
 from pydantic import BaseModel, Field, field_validator
 from pathlib import Path
+from openai import OpenAI
+import logging
 
 DATE_REGEX = r"^\d{2}/\d{2}/\d{4}$"  # dd/mm/YYYY
 
@@ -81,8 +83,13 @@ class TreatmentLine(BaseModel):
     def validate_date(cls, v):
         if v is None:
             return v
-        # raise if not dd/mm/YYYY
-        datetime.strptime(v, "%d/%m/%Y")
+        try:
+            datetime.strptime(v, "%d/%m/%Y")
+        except ValueError:
+            logging.warning(
+                f"Invalid date format received: {v!r} (expected DD/MM/YYYY)"
+            )
+            return v
         return v
 
     @field_validator("transplant_type", mode="before")
@@ -94,14 +101,15 @@ class TreatmentLine(BaseModel):
             return "autologo"
         if v in {"alogênico", "alogenico", "alogênico"}:
             return "alogenico"
-        return v  # unexpected output
+        logging.warning(f"Invalid transplant type : {v}")
+        return v
 
 
 class TreatmentLines(BaseModel):
     linhas: List[TreatmentLine]
 
 
-def extract_treatment_lines(note: str) -> TreatmentLines:
+def extract_treatment_lines(client: OpenAI, note: str) -> TreatmentLines:
     response = client.responses.parse(
         model="gpt-4.1",
         instructions=open("src/txt/instructions.txt").read(),
@@ -122,7 +130,7 @@ if __name__ == "__main__":
     client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
     treatment_lines = extract_treatment_lines(
-        Path("src/txt/example_text.txt").read_text()
+        client, Path("src/txt/example_text.txt").read_text()
     )
 
     try:
