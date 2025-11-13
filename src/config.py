@@ -72,3 +72,22 @@ drugs_ref = [
     "Venetoclax",
 ]
 # 'VCd', 'VRd', 'VTD', 'Dara-VRd']
+
+date_col_list = [
+    "inducao_start",
+    "inducao_end",
+    "consolidacao_start",
+    "consolidacao_end",
+    "manutencao_start",
+    "manutencao_end",
+    "radio_start",
+    "radio_end",
+    "transplant_dt",
+]
+
+str_col_list = [
+    "inducao_medicamentos",
+    "consolidacao_medicamentos",
+    "manutencao_medicamentos",
+    "transplant_type",
+]
