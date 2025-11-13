@@ -40,6 +40,13 @@ def redcap_labels(redcap_input_path: str, label_output_path: str) -> None:
 
     redcap_df.rename(columns=rename_columns_dict, inplace=True)
 
+    # excluding unactualized patients
+    df1 = redcap_df.dropna(subset=["Sexo"])
+    unactualized_patients = df1[df1["Desfecho final do paciente"].isna()][
+        "rghc"
+    ].tolist()
+    redcap_df = redcap_df[~redcap_df.rghc.isin(unactualized_patients)]
+
     # keep only treatment lines
     redcap_df = redcap_df[redcap_df["Repeat Instrument"] == "Linha de Tratamento"]
 
