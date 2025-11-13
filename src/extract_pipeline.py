@@ -1,4 +1,5 @@
 test_mode = True
+n_test = 10
 
 if __name__ == "__main__":
     import os
@@ -9,6 +10,9 @@ if __name__ == "__main__":
     from tqdm import tqdm
     import logging
     from datetime import datetime
+
+    tasy_src_path = "src/data/latest_tasy.csv"
+    redcap_src_path = "src/data/redcap_treatment_labels.csv"
 
     load_dotenv()
     client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -26,11 +30,11 @@ if __name__ == "__main__":
     load_dotenv()
     client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-    text_df = pd.read_csv("src/data/latest_tasy.csv")
-    label_df = pd.read_csv("src/data/redcap_treatment_labels.csv")
+    text_df = pd.read_csv(tasy_src_path)
+    label_df = pd.read_csv(redcap_src_path)
 
     if test_mode:
-        api_df = text_df[text_df.rghc.isin(label_df.rghc.tolist())].iloc[:2][
+        api_df = text_df[text_df.rghc.isin(label_df.rghc.tolist())].iloc[:n_test][
             ["rghc", "text"]
         ]
     else:
