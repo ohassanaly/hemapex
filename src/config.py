@@ -51,3 +51,24 @@ label_cols = [
     "transplant_dt",
     "transplant_type",
 ]
+
+drugs_ref = [
+    "Dexametasona",
+    "Ciclofosfamida",
+    "Talidomida",
+    "Bortezomibe",
+    "Carfilzomibe",
+    "Outros",
+    "Vincristina",
+    "Doxorrubicina",
+    "Daratumumabe",
+    "Melfalano",
+    "Lenalidomida",
+    "Prednisona",
+    "Cisplatina",
+    "Etoposideo",
+    "Panobinostat",
+    "Lomustina",
+    "Venetoclax",
+]
+# 'VCd', 'VRd', 'VTD', 'Dara-VRd']

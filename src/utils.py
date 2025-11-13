@@ -1,4 +1,7 @@
 import pandas as pd
+from config import drugs_ref
+from typing import List
+import re
 
 
 def retrieve_drugs(
@@ -18,3 +21,11 @@ def retrieve_drugs(
     ##comma-separated string instead of a list:
     df[target_drug_col] = df[target_drug_col].apply(lambda x: ", ".join(x))
     return df
+
+
+def post_process_drugs(api_text: str, drug_list: List[str] = drugs_ref) -> str:
+    if pd.isna(api_text):
+        return None
+    drugs = [d.strip() for d in re.split(r"[(),]", api_text) if d.strip()]
+    filtered = [d for d in drugs if d in drug_list]
+    return ", ".join(filtered) if filtered else None
