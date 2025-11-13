@@ -1,5 +1,7 @@
 test_mode = True
 n_test = 10
+tasy_src_path = "src/data/latest_tasy.csv"
+redcap_src_path = "src/data/redcap_treatment_labels.csv"
 
 if __name__ == "__main__":
     import os
@@ -10,9 +12,6 @@ if __name__ == "__main__":
     from tqdm import tqdm
     import logging
     from datetime import datetime
-
-    tasy_src_path = "src/data/latest_tasy.csv"
-    redcap_src_path = "src/data/redcap_treatment_labels.csv"
 
     load_dotenv()
     client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
