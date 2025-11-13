@@ -1,0 +1,68 @@
+{
+  "linhas": [
+    {
+      "line_number": 1,
+      "inducao_start": "03/03/2009",
+      "inducao_end": "30/11/2009",
+      "inducao_medicamentos": "Melfalano + Dexametasona",
+      "consolidacao_start": null,
+      "consolidacao_end": null,
+      "consolidacao_medicamentos": null,
+      "manutencao_start": null,
+      "manutencao_end": null,
+      "manutencao_medicamentos": null,
+      "radio_start": "05/02/2009",
+      "radio_end": "11/02/2009",
+      "transplant_dt": null,
+      "transplant_type": null
+    },
+    {
+      "line_number": 2,
+      "inducao_start": "12/12/2014",
+      "inducao_end": "03/03/2015",
+      "inducao_medicamentos": "Melfalano 14mg + Dexametasona 16mg D1-D4",
+      "consolidacao_start": null,
+      "consolidacao_end": null,
+      "consolidacao_medicamentos": null,
+      "manutencao_start": null,
+      "manutencao_end": null,
+      "manutencao_medicamentos": null,
+      "radio_start": null,
+      "radio_end": null,
+      "transplant_dt": null,
+      "transplant_type": null
+    },
+    {
+      "line_number": 3,
+      "inducao_start": "03/03/2016",
+      "inducao_end": "07/07/2016",
+      "inducao_medicamentos": "Melfalano 10mg + Dexametasona 20mg D1-D4",
+      "consolidacao_start": null,
+      "consolidacao_end": null,
+      "consolidacao_medicamentos": null,
+      "manutencao_start": "08/08/2016",
+      "manutencao_end": "30/09/2016",
+      "manutencao_medicamentos": "Dexametasona 20mg D1-D4",
+      "radio_start": "01/08/2016",
+      "radio_end": "05/08/2016",
+      "transplant_dt": null,
+      "transplant_type": null
+    },
+    {
+      "line_number": 4,
+      "inducao_start": "03/03/2017",
+      "inducao_end": "01/01/2018",
+      "inducao_medicamentos": "Ciclofosfamida + Dexametasona (CD), depois adicionado Talidomida (CTD)",
+      "consolidacao_start": "01/02/2018",
+      "consolidacao_end": "31/05/2018",
+      "consolidacao_medicamentos": "Ciclofosfamida + Talidomida + Dexametasona (CTD)",
+      "manutencao_start": "01/05/2018",
+      "manutencao_end": "15/03/2019",
+      "manutencao_medicamentos": "Dexametasona 20mg/semana + Talidomida 100mg/dia",
+      "radio_start": null,
+      "radio_end": null,
+      "transplant_dt": null,
+      "transplant_type": null
+    }
+  ]
+}
