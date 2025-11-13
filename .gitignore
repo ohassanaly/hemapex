@@ -14,3 +14,4 @@ wheels/
 */data
 *.ipynb
 */results
+*/logs
