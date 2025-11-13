@@ -29,3 +29,9 @@ def post_process_drugs(api_text: str, drug_list: List[str] = drugs_ref) -> str:
     drugs = [d.strip() for d in re.split(r"[(),]", api_text) if d.strip()]
     filtered = [d for d in drugs if d in drug_list]
     return ", ".join(filtered) if filtered else None
+
+
+def sort_drugs(s: str) -> str:
+    if not isinstance(s, str):
+        return None
+    return ", ".join(sorted((d.strip() for d in s.split(",")), key=str.lower))
