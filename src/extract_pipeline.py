@@ -1,3 +1,5 @@
+test_mode = True
+
 if __name__ == "__main__":
     import os
     import openai
@@ -27,11 +29,12 @@ if __name__ == "__main__":
     text_df = pd.read_csv("src/data/latest_tasy.csv")
     label_df = pd.read_csv("src/data/redcap_treatment_labels.csv")
 
-    # api_df = text_df[text_df.rghc.isin(label_df.rghc.tolist())][["rghc", "text"]]
-    # testing
-    api_df = text_df[text_df.rghc.isin(label_df.rghc.tolist())].iloc[:2][
-        ["rghc", "text"]
-    ]
+    if test_mode:
+        api_df = text_df[text_df.rghc.isin(label_df.rghc.tolist())].iloc[:2][
+            ["rghc", "text"]
+        ]
+    else:
+        api_df = text_df[text_df.rghc.isin(label_df.rghc.tolist())][["rghc", "text"]]
 
     df = pd.DataFrame()
 
