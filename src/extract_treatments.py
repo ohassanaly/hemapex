@@ -88,6 +88,7 @@ class TreatmentLine(BaseModel):
             return v
         except ValueError:
             pass
+
         try:
             dt = datetime.strptime(v, "%m/%d/%Y")
             corrected_dt = dt.strftime("%d/%m/%Y")
@@ -96,10 +97,32 @@ class TreatmentLine(BaseModel):
             )
             return corrected_dt
         except ValueError:
+            pass
+
+        try:
+            dt = datetime.strptime(
+                v, "%d/%m/%y"
+            )  # "00"–"68" → years 2000–2068 ; "69"–"99" → years 1969–1999
+            corrected_dt = dt.strftime("%d/%m/%Y")
             logging.warning(
-                f"Invalid date format received: {v!r} (expected DD/MM/YYYY)"
+                f"Corrected date from DD/MM/YY to DD/MM/YYYY: {v!r} -> {corrected_dt!r}"
             )
-            return v
+            return corrected_dt
+        except ValueError:
+            pass
+
+        try:
+            dt = datetime.strptime(v, "%m/%d/%y")
+            corrected = dt.strftime("%d/%m/%Y")
+            logging.warning(f"Corrected MM/DD/YY to DD/MM/YYYY: {v!r} -> {corrected!r}")
+            return corrected
+        except ValueError:
+            pass
+
+        logging.warning(
+            f"Invalid date format received: {v!r} (expected DD/MM/YYYY or a convertible variant)"
+        )
+        return v
 
     @field_validator("transplant_type", mode="before")
     def normalize_transplant_type(cls, v):
@@ -139,7 +162,7 @@ if __name__ == "__main__":
     client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
     treatment_lines = extract_treatment_lines(
-        client, Path("src/txt/example_text.txt").read_text()
+        client, Path("src/txt/example_text_dates.txt").read_text()
     )
 
     try:
@@ -148,7 +171,7 @@ if __name__ == "__main__":
         data = treatment_lines.__dict__
 
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    output_path = f"src/results/response_{timestamp}.csv"
+    output_path = f"src/results/testing/response_{timestamp}.csv"
     try:
         pd.DataFrame(data["linhas"]).to_csv(output_path, index=False)
         print(f"Response saved to {output_path}")
@@ -156,6 +179,6 @@ if __name__ == "__main__":
         print(e)
 
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    output_path = f"src/results/response_{timestamp}.json"
+    output_path = f"src/results/testing/response_{timestamp}.json"
     Path(output_path).write_text(json.dumps(data, indent=2))
     print(f"Response saved to {output_path}")
