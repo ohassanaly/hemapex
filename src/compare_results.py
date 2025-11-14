@@ -108,6 +108,9 @@ if __name__ == "__main__":
         "/home/ohassanaly/work/hemapex/src/results/final_result_1411_303_rghc.csv"
     )
     check_label_path = "/home/ohassanaly/work/hemapex/src/data/df_12_11_2025.csv"
+    individual_compare_path = (
+        "/home/ohassanaly/work/hemapex/src/results/testing/individual_compare.csv"
+    )
 
     # data loading
     api_df = pd.read_csv(api_result_path)[label_cols]
@@ -143,8 +146,25 @@ if __name__ == "__main__":
     )
 
     # Comparison cell by cell when agreement on the number of lines
-    df1 = api_df[~api_df.rghc.isin(diff_id)].copy().reset_index(drop=True)
-    df2 = check_df[~check_df.rghc.isin(diff_id)].copy().reset_index(drop=True)
+    df1 = (
+        api_df[~api_df.rghc.isin(diff_id)]
+        .copy()
+        .sort_values(by=["rghc", "line_number"])
+        .reset_index(drop=True)
+    )
+    df2 = (
+        check_df[~check_df.rghc.isin(diff_id)]
+        .copy()
+        .sort_values(by=["rghc", "line_number"])
+        .reset_index(drop=True)
+    )
+
+    df1.compare(
+        df2,
+        keep_shape=True,
+        # keep_equal=True,
+        result_names=("api", "redcap"),
+    ).to_csv(individual_compare_path, index=False)
 
     print(
         "number of rghc where the following comparisons are evaluated :",
