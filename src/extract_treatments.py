@@ -6,7 +6,7 @@ from pathlib import Path
 from openai import OpenAI
 import logging
 
-DATE_REGEX = r"^\d{2}/\d{2}/\d{4}$"  # dd/mm/YYYY
+DATE_REGEX = r"^\d{2}/\d{2}/(\d{2}|\d{4})$"  # dd/mm/YYYY or dd/mm/YY
 
 
 class TreatmentLine(BaseModel):
