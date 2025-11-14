@@ -28,7 +28,7 @@ def compare_number_lines(
 
 def compare_date(d1, d2) -> bool:
     """
-    return True if the dates "agree"
+    return True if the dates differ are within a 30 days interval
     False if they are different
     """
 
@@ -42,11 +42,13 @@ def compare_date(d1, d2) -> bool:
             return False
         else:
             if (
-                pd.to_datetime(d1, format="%d/%m/%Y").year
-                == pd.to_datetime(d2, format="%d/%m/%Y").year
-            ) and (
-                pd.to_datetime(d1, format="%d/%m/%Y").month
-                == pd.to_datetime(d2, format="%d/%m/%Y").month
+                abs(
+                    (
+                        pd.to_datetime(d1, format="%d/%m/%Y")
+                        - pd.to_datetime(d2, format="%d/%m/%Y")
+                    ).days
+                )
+                <= 30
             ):
                 return True
             else:
@@ -55,7 +57,7 @@ def compare_date(d1, d2) -> bool:
 
 def compare_str(s1, s2):
     """
-    return True if the string are the same
+    return True if the lowercased strings are exactly the same
     False if they are different
     """
 
@@ -103,7 +105,7 @@ if __name__ == "__main__":
     from config import label_cols, drugs_ref
 
     api_result_path = (
-        "/home/ohassanaly/work/hemapex/src/results/full_result_2025-11-13_20-30-36.csv"
+        "/home/ohassanaly/work/hemapex/src/results/final_result_1411_303_rghc.csv"
     )
     check_label_path = "/home/ohassanaly/work/hemapex/src/data/df_12_11_2025.csv"
 
@@ -143,6 +145,11 @@ if __name__ == "__main__":
     # Comparison cell by cell when agreement on the number of lines
     df1 = api_df[~api_df.rghc.isin(diff_id)].copy().reset_index(drop=True)
     df2 = check_df[~check_df.rghc.isin(diff_id)].copy().reset_index(drop=True)
+
+    print(
+        "number of rghc where the following comparisons are evaluated :",
+        df1.rghc.nunique(),
+    )
     agreement, comparison = compare_df(df1, df2)
     print("number of cells where the two methods agree :", agreement)
     print("number of comparisons evaluated:", comparison)
