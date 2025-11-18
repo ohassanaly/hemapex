@@ -103,6 +103,7 @@ def compare_df(df1: pd.DataFrame, df2: pd.DataFrame) -> List[int]:
 if __name__ == "__main__":
     from utils import post_process_drugs, sort_drugs
     from config import label_cols, drugs_ref
+    import pickle
 
     api_result_path = (
         "/home/ohassanaly/work/hemapex/src/results/final_result_1411_303_rghc.csv"
@@ -111,6 +112,8 @@ if __name__ == "__main__":
     individual_compare_path = (
         "/home/ohassanaly/work/hemapex/src/results/testing/individual_compare.csv"
     )
+
+    update_rghc_path = "/home/ohassanaly/work/hemapex/src/data/updated_rghc.pkl"
 
     # data loading
     api_df = pd.read_csv(api_result_path)[label_cols]
@@ -131,6 +134,15 @@ if __name__ == "__main__":
 
     api_df[cols] = api_df[cols].apply(lambda col: col.apply(sort_drugs))
     check_df[cols] = check_df[cols].apply(lambda col: col.apply(sort_drugs))
+
+    # only keep up to date patients
+    with open(update_rghc_path, "rb") as file:
+        update_rghc_list = pickle.load(file)
+    api_df = api_df[api_df.rghc.isin(update_rghc_list)]
+    check_df = check_df[check_df.rghc.isin(update_rghc_list)]
+
+    print("number of rghc used for final evaluation", api_df.rghc.nunique())
+
     ### end of preprocessing
 
     ### Comparisons
