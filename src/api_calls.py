@@ -35,6 +35,8 @@ def wrap_result(result):
         return result
     elif isinstance(result, dict):
         return json.dumps(result, ensure_ascii=False)
+    elif isinstance(result, BaseModel):
+        return result.model_dump_json()
     else:
         raise TypeError(f"Don't know how to handle type {type(result)}")
 
@@ -103,15 +105,13 @@ def call_llm_structured(
         try:
             result = wrap_result(response.choices[0].message.content)
         except Exception as e:
-            print("could not infer type of the result", e)
-            return
+            raise RuntimeError(f"Could not infer type of the result: {e}")
         try:
             return schema_model.model_validate_json(result)
-        except ValidationError as e:
-            print(e)
-            return result
-        except Exception:
-            return
+        except ValidationError:
+            raise
+        except Exception as e:
+            raise RuntimeError(f"Unexpected error while validating JSON: {e}")
 
     elif provider == Provider.GROQ:
         from groq import Groq
@@ -147,15 +147,13 @@ def call_llm_structured(
         try:
             result = wrap_result(response.choices[0].message.content)
         except Exception as e:
-            print("could not infer type of the result", e)
-            return
+            raise RuntimeError(f"Could not infer type of the result: {e}")
         try:
             return schema_model.model_validate_json(result)
-        except ValidationError as e:
-            print(e)
-            return result
-        except Exception:
-            return
+        except ValidationError:
+            raise
+        except Exception as e:
+            raise RuntimeError(f"Unexpected error while validating JSON: {e}")
 
     else:
         raise ValueError(f"Unknown provider: {provider}")
@@ -166,7 +164,6 @@ if __name__ == "__main__":
     from datetime import datetime
     from pathlib import Path
     from dotenv import load_dotenv
-    import json
 
     # test providers one by one
     for provider in Provider:
@@ -194,10 +191,5 @@ if __name__ == "__main__":
             data = result.model_dump()
             Path(output_path).write_text(json.dumps(data, indent=2))
             print(f"Response saved to {output_path}")
-        except Exception:
-            try:
-                Path(output_path).write_text(json.dumps(result, indent=2))
-                print("JSON validation failed ; saving the dict result")
-                print(f"Response saved to {output_path}")
-            except Exception as e:
-                print(e)
+        except Exception as e:
+            print(f"Failed to save response for {provider.value}: {e}")
