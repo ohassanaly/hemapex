@@ -456,6 +456,23 @@ wheels = [
 ]
 
 [[package]]
+name = "groq"
+version = "0.35.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+    { name = "distro" },
+    { name = "httpx" },
+    { name = "pydantic" },
+    { name = "sniffio" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c5/f6/c61df67afa7863aef1cbbf76052bf4b6784fcadb9f3ba5a25a4e18d79d09/groq-0.35.0.tar.gz", hash = "sha256:b3b96f3ac39ee8755ad7b64c71d2065ecc37a84b52a62fd87de209c8725fed13", size = 144425, upload-time = "2025-11-18T23:52:45.966Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/15/23/e54a7dec9940ab67d3ce160ec02f5022bd8d6c912829887bdd907340fa2f/groq-0.35.0-py3-none-any.whl", hash = "sha256:7c8b3bf9501fad59a4f62c7aa8349f00e4862a0bbaf9587b321754ece83442ef", size = 137078, upload-time = "2025-11-18T23:52:44.544Z" },
+]
+
+[[package]]
 name = "h11"
 version = "0.16.0"
 source = { registry = "https://pypi.org/simple" }
@@ -471,6 +488,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "dotenv" },
     { name = "google-genai" },
+    { name = "groq" },
     { name = "logging" },
     { name = "mistralai" },
     { name = "openai" },
@@ -490,6 +508,7 @@ dev = [
 requires-dist = [
     { name = "dotenv", specifier = ">=0.9.9" },
     { name = "google-genai", specifier = ">=1.51.0" },
+    { name = "groq", specifier = ">=0.35.0" },
     { name = "logging", specifier = ">=0.4.9.6" },
     { name = "mistralai", specifier = ">=1.9.11" },
     { name = "openai", specifier = ">=2.7.2" },
