@@ -116,6 +116,17 @@ class TreatmentLine(BaseModel):
         except ValueError:
             pass
 
+        try:
+            # Example: "03/2024"
+            dt = datetime.strptime(v, "%m/%Y")
+            fixed = dt.replace(day=15)
+            logging.warning(
+                f"Corrected MM/YY to DD/MM/YYYY (mid of the month): {v!r} -> {corrected!r}"
+            )
+            return fixed.strftime("%d/%m/%Y")
+        except ValueError:
+            pass
+
         logging.warning(
             f"Invalid date format received: {v!r} (expected DD/MM/YYYY or a convertible variant)"
         )
