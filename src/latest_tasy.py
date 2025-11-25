@@ -30,8 +30,14 @@ def latest_tasy(
 
 
 if __name__ == "__main__":
+    from pathlib import Path
+
     latest_tasy(
-        input_path="src/data/mieloma_olivier_1.csv",
-        output_path="src/data/latest_tasy.csv",
-        text_columns=tasy_tratamento_columns,
+        Path(".") / "src/data/tmo_tasy.csv",
+        Path(".") / "src/data/tasy_api.csv",
+        tasy_tratamento_columns,
     )
+    tdf = pd.read_csv(Path(".") / "src/data/tasy_api.csv")
+    rdf = pd.read_csv(Path(".") / "src/data/tmo_redcap.csv")
+    # keep only patients with a single transplant recorded
+    tdf[tdf.rghc.isin(rdf.rghc.tolist())].to_csv(Path(".") / "src/data/tasy_api.csv")
