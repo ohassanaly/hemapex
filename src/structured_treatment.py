@@ -110,20 +110,21 @@ class TreatmentLine(BaseModel):
 
         try:
             dt = datetime.strptime(v, "%m/%d/%y")
-            corrected = dt.strftime("%d/%m/%Y")
-            logging.warning(f"Corrected MM/DD/YY to DD/MM/YYYY: {v!r} -> {corrected!r}")
-            return corrected
+            corrected_dt = dt.strftime("%d/%m/%Y")
+            logging.warning(
+                f"Corrected MM/DD/YY to DD/MM/YYYY: {v!r} -> {corrected_dt!r}"
+            )
+            return corrected_dt
         except ValueError:
             pass
 
         try:
-            # Example: "03/2024"
             dt = datetime.strptime(v, "%m/%Y")
-            fixed = dt.replace(day=15)
+            corrected_dt = dt.replace(day=15).strftime("%d/%m/%Y")
             logging.warning(
-                f"Corrected MM/YY to DD/MM/YYYY (mid of the month): {v!r} -> {corrected!r}"
+                f"Corrected MM/YY to DD/MM/YYYY (mid of the month): {v!r} -> {corrected_dt!r}"
             )
-            return fixed.strftime("%d/%m/%Y")
+            return corrected_dt
         except ValueError:
             pass
 
