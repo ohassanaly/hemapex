@@ -1,15 +1,20 @@
 ## Hematology API extract (hemapex)
 
-For research purpose, ICHC team fills databases in REDCAP. One of them focuses on myeloma patients. Myeloma implies a complex care. Typical care trajecory is described below in portuguese. This project aims to automatically extract some of the main elements of care such as treatments or relapses in order to avoid chronophagous manual review.
+For research purpose, ICHC team fills databases in [REDCAP](https://project-redcap.org/). This project aims to automatically extract some of the main elements of hematology patients care such as treatments or relapses in order to avoid chronophagous manual review.
 
-Textual data was extracted from patients EMR using package registro (developped by ICHC team)
+Automatic extraction uses API calls to LLM providers such as OpenAI or Google Gemini. We built a framework for retrieving structured output in this project (mainly built upon [Pydantic](https://docs.pydantic.dev/latest/))<br>
+The LLM API is given a _prompt instruction_ + a _patient clinical text_ + a _structured output schema_ and generates a _structured JSON_ as output.
 
-REDCAP database was used as labelled data to evaluate the performances of our method.
+Textual data were extracted from patients Electronic Medical Record (EMR) using the package _registro_ (developped by ICHC team). This package mostly scraps EMRs from [Tasy software](https://www.philips.com/a-w/about/news/media-library/20180726-Philips-Tasy-Electronic-Medical-Record-EMR.html) and aims to extend to the different softwares used at ICHC.
 
-This project was developped based on myeloma data. It is somehow specific to this disease context but may be extended to other diseases.
+The results were assessed with a comparison with a gold standard. The current REDCAP databases were used as a first labelled data source to evaluate the performances of our method. A manueal review of clinical notes would however provide a more robust gold standard.
+
+This project was developped based on hematology data. It is somehow specific to those diseases context ; in particular the structured pydantic Models and the prompt instructions. However, its general methods for extracting structured information based on textual documents may be extended to any fields.
 _________
 
 ### Myeloma care trajectory
+
+One of the databses focuses on myeloma patients. Myeloma implies a complex care. Typical care trajecory is described below in portuguese.
 
 Tem muitos esquemas de tratamento possíveis.
 
@@ -48,6 +53,40 @@ Duração: até progressão ou intolerância.
 
 5. _Radioterapia_ (feita de forma independente ; nem é sempre obrigatória)
 
+_____________
+
+### Relapses post Bone Marrow transplants
+
+Identification of relapses post transplant and the associated dates are other key data that are time-consuming to extract from patient records. This extends above myeloma patients.
+
+_____________
+
+### Results
+
+#### Myeloma treatments
+
+The average cost was approximately 0.01$ for extracting the information for one patient.
+
+A first comparison between REDCAP databases and data extracted using APIs has been made. Below are the results : <br>
+
+number of rghc used for final evaluation 224
+the two methods disagree on the number of line for 111 cases among the 224 cases evaluated
+number of rghc where the following comparisons are evaluated : 113
+number of cells where the two methods agree (dates within 1 month or exact treatment correspondance) : 2872
+number of comparisons evaluated: 3211
+agreement ratio:  89.0 %
+
+Two limits arise from this comparison with REDCAP database :<br>
+
+- text incompleteness
+
+- data in REDCAP is not always up to date
+
+REDCAP data does not seem a gold standard for comparing with our results. Thus, we consider the next step of the project to be a manual review of a sample of the texts given to the API by a doctor to get a proper gold standard.
+
+#### Transplant relapses
+
+Work in progress with the ICHC team
 _____________
 
 ## Registro package
