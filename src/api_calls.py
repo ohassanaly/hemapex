@@ -73,6 +73,7 @@ def call_llm_structured(
             config={
                 "response_mime_type": "application/json",
                 "response_schema": schema_model.model_json_schema(),
+                "temperature": 0,
             },
         )
         return schema_model.model_validate_json(response.text)
@@ -182,7 +183,7 @@ if __name__ == "__main__":
         result = call_llm_structured(
             provider=provider,
             model=model,
-            instruction=open("src/txt/instructions.txt").read(),
+            instruction=open("src/txt/mm_instructions.txt").read(),
             unstructured_text=open("src/txt/example_text.txt").read(),
             schema_model=TreatmentLines,
         )
